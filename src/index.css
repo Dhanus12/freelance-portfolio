@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Global styles */
+html, body, #root { height: 100%; }
+body { @apply bg-slate-950 text-white antialiased; }
+
+.container { @apply max-w-6xl mx-auto px-4; }
+.section { @apply py-16 md:py-24; }
+
+.btn-primary { @apply inline-flex items-center gap-2 rounded-lg bg-cyan-400 text-slate-900 font-semibold px-4 py-2 hover:bg-cyan-300 transition-colors; }
+.btn-outline { @apply inline-flex items-center gap-2 rounded-lg border border-slate-700 text-white px-4 py-2 hover:border-cyan-400 hover:text-cyan-400 transition-colors; }
+
+.card { @apply bg-slate-900/60 backdrop-blur border border-slate-800 rounded-xl shadow-lg; }
+
+.nav-link { @apply px-3 py-2 rounded-md hover:text-cyan-400 transition-colors; }
+.active-link { @apply text-cyan-400; }
