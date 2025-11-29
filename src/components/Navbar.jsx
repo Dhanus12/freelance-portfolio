@@ -1,32 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FaBars, FaTimes } from 'react-icons/fa'
-import gsap from 'gsap'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
-  const tl = useRef(null)
-
-  useEffect(() => {
-    tl.current = gsap.timeline({ paused: true })
-      .fromTo(
-        menuRef.current,
-        { y: '-100%', autoAlpha: 0 },
-        { y: '0%', autoAlpha: 1, duration: 0.4, ease: 'power2.out' }
-      )
-      .from(
-        menuRef.current?.querySelectorAll('a'),
-        { y: 12, autoAlpha: 0, stagger: 0.05, duration: 0.3 },
-        '<'
-      )
-  }, [])
-
-  useEffect(() => {
-    if (!tl.current) return
-    if (open) tl.current.restart(true)
-    else tl.current.reverse()
-  }, [open])
 
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-slate-950/70 border-b border-slate-800">
@@ -47,23 +25,35 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile toggle */}
-        <button aria-label="Menu" className="md:hidden text-white" onClick={() => setOpen(v => !v)}>
+        <button aria-label="Menu" aria-expanded={open} className="md:hidden text-white" onClick={() => setOpen(v => !v)}>
           {open ? <FaTimes size={22} /> : <FaBars size={22} />}
         </button>
       </div>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile menu overlay (explicit link styling + close button) */}
       <div
         ref={menuRef}
-        className={`${open ? 'block' : 'hidden'} md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-lg border-b border-slate-800 pt-20 pb-8 px-6`}
+        role="dialog"
+        aria-modal="true"
+        className={`${open ? 'block' : 'hidden'} md:hidden fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-lg pt-24 pb-12 px-6 min-h-screen relative`}
       >
-        <div className="flex flex-col text-lg gap-4">
-          <NavLink onClick={() => setOpen(false)} to="/" className="nav-link">Home</NavLink>
-          <NavLink onClick={() => setOpen(false)} to="/about" className="nav-link">About</NavLink>
-          <NavLink onClick={() => setOpen(false)} to="/services" className="nav-link">Services</NavLink>
-          <NavLink onClick={() => setOpen(false)} to="/projects" className="nav-link">Projects</NavLink>
-          <NavLink onClick={() => setOpen(false)} to="/resume" className="nav-link">Resume</NavLink>
-          <NavLink onClick={() => setOpen(false)} to="/contact" className="nav-link">Contact</NavLink>
+        {/* Close button inside overlay */}
+        <button
+          aria-label="Close menu"
+          className="absolute top-4 right-4 p-2 rounded-md text-white hover:text-cyan-400"
+          onClick={() => setOpen(false)}
+        >
+          <FaTimes size={22} />
+        </button>
+
+        <div className="flex flex-col text-xl gap-3 text-white">
+          <h2 className="mb-2 text-2xl font-bold">Menu</h2>
+          <NavLink onClick={() => setOpen(false)} to="/" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">Home</NavLink>
+          <NavLink onClick={() => setOpen(false)} to="/about" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">About</NavLink>
+          <NavLink onClick={() => setOpen(false)} to="/services" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">Services</NavLink>
+          <NavLink onClick={() => setOpen(false)} to="/projects" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">Projects</NavLink>
+          <NavLink onClick={() => setOpen(false)} to="/resume" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">Resume</NavLink>
+          <NavLink onClick={() => setOpen(false)} to="/contact" className="block px-3 py-2 rounded-md text-white hover:text-cyan-400 transition-colors">Contact</NavLink>
         </div>
       </div>
     </header>
